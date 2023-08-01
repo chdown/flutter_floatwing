@@ -395,7 +395,7 @@ class FloatwingService : MethodChannel.MethodCallHandler, BasicMessageChannel.Me
 
         // ensure the service is started
         private fun ensureService(context: Context): Boolean {
-            if (instance != null) return true
+            if (isRunning(context)) return true
 
 
             // let's start the service
