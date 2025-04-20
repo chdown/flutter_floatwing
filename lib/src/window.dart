@@ -228,6 +228,9 @@ class WindowConfig {
 
   bool? visible;
 
+  double? marginVertical;
+  double? offsetX;
+
   /// we need this for update, so must wihtout default value
   WindowConfig({
     this.id = "default",
@@ -247,6 +250,8 @@ class WindowConfig {
     this.focusable,
     this.immersion,
     this.visible,
+    this.marginVertical,
+    this.offsetX,
   }) : assert(
             callback == null ||
                 PluginUtilities.getCallbackHandle(callback) != null,
@@ -281,6 +286,9 @@ class WindowConfig {
       immersion: map["immersion"],
 
       visible: map["visible"],
+
+      marginVertical: map["marginVertical"],
+      offsetX: map["offsetX"],
     );
   }
 
@@ -312,6 +320,9 @@ class WindowConfig {
     map["immersion"] = immersion;
 
     map["visible"] = visible;
+
+    map["marginVertical"] = marginVertical;
+    map["offsetX"] = offsetX;
 
     return map;
   }
