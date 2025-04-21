@@ -46,7 +46,7 @@ class _FloatwingContainerState extends State<FloatwingContainer> {
   Window? _window = FloatwingPlugin().currentWindow;
 
   var _ignorePointer = false;
-  var _autosize = true;
+  var _autosize = false;
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _FloatwingContainerState extends State<FloatwingContainer> {
   _changed() async {
     // clickable == !ignorePointer
     _ignorePointer = !(_window?.config?.clickable ?? true);
-    _autosize = _window?.config?.autosize ?? true;
+    _autosize = _window?.config?.autosize ?? false;
     // update the flutter ui
     if (mounted) setState(() {});
   }
