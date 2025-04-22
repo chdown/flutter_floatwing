@@ -5,8 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:flutter_floatwing/flutter_floatwing.dart';
 
-typedef OnDataHanlder = Future<dynamic> Function(
-    String? source, String? name, dynamic data);
+typedef OnDataHanlder = Future<dynamic> Function(String? source, String? name, dynamic data);
 
 class Window {
   String id = "default";
@@ -29,19 +28,15 @@ class Window {
             var map = call.arguments as Map<dynamic, dynamic>;
             // source, name, data
             // if not provided, should not call this
-            return _onDataHandler?.call(
-                    map["source"], map["name"], map["data"]) ??
-                Future.value(null);
+            return _onDataHandler?.call(map["source"], map["name"], map["data"]) ?? Future.value(null);
           }
       }
       return Future.value(null);
     });
   }
 
-  static final MethodChannel _channel =
-      MethodChannel('${FloatwingPlugin.channelID}/window');
-  static final BasicMessageChannel _message = BasicMessageChannel(
-      '${FloatwingPlugin.channelID}/window_msg', JSONMessageCodec());
+  static final MethodChannel _channel = MethodChannel('${FloatwingPlugin.channelID}/window');
+  static final BasicMessageChannel _message = BasicMessageChannel('${FloatwingPlugin.channelID}/window_msg', JSONMessageCodec());
 
   factory Window.fromMap(Map<dynamic, dynamic>? map) {
     return Window().applyMap(map);
@@ -66,9 +61,7 @@ class Window {
   /// The data from the closest instance of this class that encloses the given
   /// context.
   static Window? of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<FloatwingProvider>()
-        ?.window;
+    return context.dependOnInheritedWidgetOfExactType<FloatwingProvider>()?.window;
   }
 
   Future<bool?> hide() {
@@ -90,8 +83,7 @@ class Window {
 
   Future<Window?> create({bool start = false}) async {
     // // create the engine first
-    return await FloatwingPlugin()
-        .createWindow(this.id, this.config!, start: start, window: this);
+    return await FloatwingPlugin().createWindow(this.id, this.config!, start: start, window: this);
   }
 
   /// create child window
@@ -102,11 +94,7 @@ class Window {
     bool start = false, // start immediately if true
     Window? window,
   }) async {
-    return FloatwingPlugin().internalCreateWindow(id, config,
-        start: start,
-        window: window,
-        channel: _channel,
-        name: "window.create_child");
+    return FloatwingPlugin().internalCreateWindow(id, config, start: start, window: window, channel: _channel, name: "window.create_child");
   }
 
   Future<bool?> start() async {
@@ -154,9 +142,10 @@ class Window {
   Future<dynamic> share(
     dynamic data, {
     String name = "default",
+    String? targetId,
   }) async {
     var map = {};
-    map["target"] = id;
+    map["target"] = targetId ?? id;
     map["data"] = data;
     map["name"] = name;
     // make sure data is serialized
@@ -252,21 +241,17 @@ class WindowConfig {
     this.visible,
     this.marginVertical,
     this.offsetX,
-  }) : assert(
-            callback == null ||
-                PluginUtilities.getCallbackHandle(callback) != null,
-            "callback is not a static function");
+  }) : assert(callback == null || PluginUtilities.getCallbackHandle(callback) != null, "callback is not a static function");
 
   factory WindowConfig.fromMap(Map<dynamic, dynamic> map) {
     var _cb;
-    if (map["callback"] != null)
-      _cb = PluginUtilities.getCallbackFromHandle(
-          CallbackHandle.fromRawHandle(map["callback"]));
+    if (map["callback"] != null) _cb = PluginUtilities.getCallbackFromHandle(CallbackHandle.fromRawHandle(map["callback"]));
     return WindowConfig(
       // id: map["id"],
       entry: map["entry"],
       route: map["route"],
-      callback: _cb, // get the callback from id
+      callback: _cb,
+      // get the callback from id
 
       autosize: map["autosize"],
 
@@ -298,9 +283,7 @@ class WindowConfig {
     map["entry"] = entry;
     map["route"] = route;
     // find the callback id from callback function
-    map["callback"] = callback != null
-        ? PluginUtilities.getCallbackHandle(callback!)?.toRawHandle()
-        : null;
+    map["callback"] = callback != null ? PluginUtilities.getCallbackHandle(callback!)?.toRawHandle() : null;
 
     map["autosize"] = autosize;
 
