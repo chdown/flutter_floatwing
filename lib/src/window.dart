@@ -7,6 +7,8 @@ import 'package:flutter_floatwing/flutter_floatwing.dart';
 
 typedef OnDataHanlder = Future<dynamic> Function(String? source, String? name, dynamic data);
 
+OnDataHanlder? onGlobalDataHandler;
+
 class Window {
   String id = "default";
   WindowConfig? config;
@@ -28,6 +30,7 @@ class Window {
             var map = call.arguments as Map<dynamic, dynamic>;
             // source, name, data
             // if not provided, should not call this
+            onGlobalDataHandler?.call(map["source"], map["name"], map["data"]) ?? Future.value(null);
             return _onDataHandler?.call(map["source"], map["name"], map["data"]) ?? Future.value(null);
           }
       }
