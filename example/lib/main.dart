@@ -35,17 +35,20 @@ class _MyAppState extends State<MyApp> {
       // entry: "floatwing",
       route: "/normal",
       draggable: true,
+      autosize: true,
     ),
     WindowConfig(
       id: "assitive_touch",
       // entry: "floatwing",
       route: "/assitive_touch",
+      autosize: true,
       draggable: true,
     ),
     WindowConfig(
       id: "night",
       // entry: "floatwing",
       route: "/night",
+      autosize: true,
       width: WindowSize.MatchParent, height: WindowSize.MatchParent,
       clickable: false,
     )
@@ -94,7 +97,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    widget.configs.forEach((c) => _windows.add(c.to()));
+    onCusDataHandler = (source, name, data) async {
+      print("=-----------------------111111111111--");
+      print(source);
+    };
+    widget.configs.forEach((c) => _windows.add(c.to(onDataHandler: (source, name, data) async{
+      print("=-------------------------");
+      print(source);
+    },)));
 
     FloatwingPlugin().initialize();
 

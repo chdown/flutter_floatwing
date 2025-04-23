@@ -16,7 +16,10 @@ class _NonrmalViewState extends State<NonrmalView> {
   @override
   void initState() {
     super.initState();
-
+    onCusDataHandler = (source, name, data) async {
+      print("=-----------------------111111111111--");
+      print(source);
+    };
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       w = Window.of(context);
       w?.on(EventType.WindowDragStart, (window, data) {
@@ -46,22 +49,40 @@ class _NonrmalViewState extends State<NonrmalView> {
         child: Card(
             child: Stack(
           children: [
-            Center(
-                child: ElevatedButton(
+            Column(
+              children: [
+                Center(
+                  child: ElevatedButton(
                     onPressed: () {
                       w?.launchMainActivity();
                     },
-                    child: Text("Start Activity"))),
-            Positioned(
-                right: 5, top: 5, child: Icon(Icons.drag_handle_rounded)),
+                    child: Text("Start Activity"),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      w?.share("data");
+                    },
+                    child: Text("Start 1"),
+                  ),
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // w?.share("data",targetId: "assitive_touch");
+                      w?.share("data");
+                    },
+                    child: Text("Start 2"),
+                  ),
+                )
+              ],
+            ),
+            Positioned(right: 5, top: 5, child: Icon(Icons.drag_handle_rounded)),
             Positioned(
                 right: 5,
                 bottom: 5,
-                child: RotationTransition(
-                    turns: AlwaysStoppedAnimation(-45 / 360),
-                    child: InkWell(
-                        onTap: _changeSize,
-                        child: Icon(Icons.unfold_more_rounded))))
+                child: RotationTransition(turns: AlwaysStoppedAnimation(-45 / 360), child: InkWell(onTap: _changeSize, child: Icon(Icons.unfold_more_rounded))))
           ],
         )),
       ),

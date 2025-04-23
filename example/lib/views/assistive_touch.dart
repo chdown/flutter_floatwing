@@ -28,14 +28,25 @@ class _AssistiveTouchState extends State<AssistiveTouch> {
     super.initState();
 
     initAsyncState();
-
+    onCusDataHandler = (source, name, data) async {
+      print("=-----------------------2222222--");
+      print(source);
+    };
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       touchWindow = Window.of(context);
       touchWindow?.on(EventType.WindowStarted, (window, data) {
         print("touch window start ...");
         expend = false;
         setState(() {});
-      });
+      }).on(EventType.WindowCreated, (window, data) {
+        window.onData((source, name, data) async{
+          print("=========================");
+          print(source);
+          print(name);
+          print(data);
+          print("=========================");
+        });
+      },);
     });
   }
 
