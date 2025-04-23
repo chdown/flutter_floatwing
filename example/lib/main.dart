@@ -4,6 +4,8 @@ import 'package:flutter_floatwing/flutter_floatwing.dart';
 import 'package:flutter_floatwing_example/views/assistive_touch.dart';
 import 'package:flutter_floatwing_example/views/night.dart';
 import 'package:flutter_floatwing_example/views/normal.dart';
+import 'package:flutter_floatwing_example/views/normal1.dart';
+import 'package:flutter_floatwing_example/views/normal2.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,6 +40,13 @@ class _MyAppState extends State<MyApp> {
       autosize: true,
     ),
     WindowConfig(
+      id: "normal1",
+      // entry: "floatwing",
+      route: "/normal1",
+      draggable: true,
+      autosize: true,
+    ),
+    WindowConfig(
       id: "assitive_touch",
       // entry: "floatwing",
       route: "/assitive_touch",
@@ -57,6 +66,7 @@ class _MyAppState extends State<MyApp> {
 
   Map<String, WidgetBuilder> _builders = {
     "normal": (_) => NonrmalView(),
+    "normal1": (_) => NonrmalView1(),
     "assitive_touch": (_) => AssistiveTouch(),
     "night": (_) => NightView(),
   };
@@ -68,6 +78,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     _routes["/"] = (_) => HomePage(configs: _configs);
+    _routes["/normal2"] = (_) => NonrmalView2().floatwing();
 
     _configs.forEach((c) => {
           if (c.route != null && _builders[c.id] != null) {_routes[c.route!] = _builders[c.id]!.floatwing(debug: false)}

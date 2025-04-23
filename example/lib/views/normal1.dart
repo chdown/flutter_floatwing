@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_floatwing/flutter_floatwing.dart';
 
-class NonrmalView extends StatefulWidget {
-  const NonrmalView({Key? key}) : super(key: key);
+class NonrmalView1 extends StatefulWidget {
+  const NonrmalView1({Key? key}) : super(key: key);
 
   @override
-  State<NonrmalView> createState() => _NonrmalViewState();
+  State<NonrmalView1> createState() => _NonrmalViewState();
 }
 
-class _NonrmalViewState extends State<NonrmalView> {
+class _NonrmalViewState extends State<NonrmalView1> {
   bool _expend = false;
   double _size = 300;
 
@@ -47,13 +47,19 @@ class _NonrmalViewState extends State<NonrmalView> {
           children: [
             Column(
               children: [
-                Text("Normal"),
+                Text("Normal1"),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      w?.launchMainActivity();
+                      WindowConfig(
+                        id: "normal2",
+                        // entry: "floatwing",
+                        route: "/normal2",
+                        draggable: true,
+                        autosize: true,
+                      ).to().create(start: true);
                     },
-                    child: Text("Start Activity"),
+                    child: Text("Start Normal2"),
                   ),
                 ),
                 Center(
