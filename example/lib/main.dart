@@ -49,7 +49,8 @@ class _MyAppState extends State<MyApp> {
       // entry: "floatwing",
       route: "/night",
       autosize: true,
-      width: WindowSize.MatchParent, height: WindowSize.MatchParent,
+      width: WindowSize.MatchParent,
+      height: WindowSize.MatchParent,
       clickable: false,
     )
   ];
@@ -69,8 +70,7 @@ class _MyAppState extends State<MyApp> {
     _routes["/"] = (_) => HomePage(configs: _configs);
 
     _configs.forEach((c) => {
-          if (c.route != null && _builders[c.id] != null)
-            {_routes[c.route!] = _builders[c.id]!.floatwing(debug: false)}
+          if (c.route != null && _builders[c.id] != null) {_routes[c.route!] = _builders[c.id]!.floatwing(debug: false)}
         });
   }
 
@@ -86,6 +86,7 @@ class _MyAppState extends State<MyApp> {
 
 class HomePage extends StatefulWidget {
   final List<WindowConfig> configs;
+
   const HomePage({Key? key, required this.configs}) : super(key: key);
 
   @override
@@ -96,15 +97,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    onCusDataHandler = (source, name, data) async {
-      print("=-----------------------111111111111--");
-      print(source);
-    };
-    widget.configs.forEach((c) => _windows.add(c.to(onDataHandler: (source, name, data) async{
-      print("=-------------------------");
-      print(source);
-    },)));
+    widget.configs.forEach((c) => _windows.add(c.to()));
 
     FloatwingPlugin().initialize();
 
@@ -192,15 +185,12 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              Text(w.id,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              Text(w.id, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               SizedBox(height: 10),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 214, 213, 213),
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
+                decoration: BoxDecoration(color: Color.fromARGB(255, 214, 213, 213), borderRadius: BorderRadius.all(Radius.circular(4))),
                 child: Text(w.config?.toString() ?? ""),
               ),
               SizedBox(height: 10),
@@ -211,14 +201,9 @@ class _HomePageState extends State<HomePage> {
                     onPressed: (_readys[w] == true) ? () => w.start() : null,
                     child: Text("Open"),
                   ),
+                  TextButton(onPressed: w.config?.route != null ? () => _debug(w) : null, child: Text("Debug")),
                   TextButton(
-                      onPressed:
-                          w.config?.route != null ? () => _debug(w) : null,
-                      child: Text("Debug")),
-                  TextButton(
-                    onPressed: (_readys[w] == true)
-                        ? () => {w.close(), w.share("close")}
-                        : null,
+                    onPressed: (_readys[w] == true) ? () => {w.close(), w.share("close")} : null,
                     child: Text("Close", style: TextStyle(color: Colors.red)),
                   ),
                 ],

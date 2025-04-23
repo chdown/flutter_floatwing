@@ -1,40 +1,47 @@
 import 'dart:ui';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:flutter_floatwing/flutter_floatwing.dart';
 
-typedef OnDataHanlder = Future<dynamic> Function(String? source, String? name, dynamic data);
-
-OnDataHanlder? onGlobalDataHandler;
+typedef OnDataHandler = Future<dynamic> Function(String? source, String? name, dynamic data);
 
 class Window {
   String id = "default";
   WindowConfig? config;
-
   double? pixelRadio;
   SystemConfig? system;
-  OnDataHanlder? _onDataHandler;
+  OnDataHandler? _onDataHandler;
+  OnDataHandler? get dataHandler => _onDataHandler;
 
   late EventManager _eventManager;
+  final _messageQueue = StreamController<Map<String, dynamic>>.broadcast();
+  Stream<Map<String, dynamic>> get messageStream => _messageQueue.stream;
 
   Window({this.id = "default", this.config}) {
     _eventManager = EventManager(_message, window: this);
 
-    // share data use the call
-    _channel.setMethodCallHandler((call) {
+    _channel.setMethodCallHandler((call) async {
       switch (call.method) {
-        case "data.share":
-          {
-            var map = call.arguments as Map<dynamic, dynamic>;
-            // source, name, data
-            // if not provided, should not call this
-            onGlobalDataHandler?.call(map["source"], map["name"], map["data"]) ?? Future.value(null);
-            return _onDataHandler?.call(map["source"], map["name"], map["data"]) ?? Future.value(null);
+        case "data.share": {
+          var map = call.arguments as Map<dynamic, dynamic>;
+          print("Window[$id] received data from ${map["source"]}: ${map["data"]}");
+          
+          _messageQueue.add({
+            "source": map["source"],
+            "name": map["name"],
+            "data": map["data"]
+          });
+          
+          if (_onDataHandler != null) {
+            return await _onDataHandler!(map["source"], map["name"], map["data"]);
           }
+
+          return null;
+        }
       }
-      return Future.value(null);
+      return null;
     });
   }
 
@@ -51,7 +58,6 @@ class Window {
   }
 
   Window applyMap(Map<dynamic, dynamic>? map) {
-    // apply the map to config and object
     if (map == null) return this;
     id = map["id"];
     pixelRadio = map["pixelRadio"] ?? 1.0;
@@ -147,12 +153,22 @@ class Window {
     String name = "default",
     String? targetId,
   }) async {
-    var map = {};
-    map["target"] = targetId ?? id;
-    map["data"] = data;
-    map["name"] = name;
-    // make sure data is serialized
-    return await _channel.invokeMethod("data.share", map);
+    try {
+      print("Window[$id] sharing data to $targetId: $data");
+      
+      var map = {};
+      map["target"] = targetId ?? id;
+      map["data"] = data;
+      map["name"] = name;
+      
+      return await _channel.invokeMethod("data.share", map)
+          .timeout(const Duration(seconds: 5), onTimeout: () {
+        throw TimeoutException("Share operation timed out");
+      });
+    } catch (e) {
+      print("Window[$id] share error: $e");
+      rethrow;
+    }
   }
 
   /// launch main activity
@@ -164,9 +180,17 @@ class Window {
   /// maybe same like event handler
   /// but one window in engine can only have one data handler
   /// to make sure data not be comsumed multiple times.
-  Window onData(OnDataHanlder handler) {
-    assert(_onDataHandler == null, "onData can only called once");
-    _onDataHandler = handler;
+  Window onData(OnDataHandler handler) {
+    assert(_onDataHandler == null, "onData can only be called once");
+    _onDataHandler = (source, name, data) async {
+      try {
+        print("Window[$id] handling data from $source: $data");
+        return await handler(source, name, data);
+      } catch (e) {
+        print("Window[$id] data handler error: $e");
+        rethrow;
+      }
+    };
     return this;
   }
 

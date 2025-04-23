@@ -11,15 +11,11 @@ class NonrmalView extends StatefulWidget {
 
 class _NonrmalViewState extends State<NonrmalView> {
   bool _expend = false;
-  double _size = 150;
+  double _size = 300;
 
   @override
   void initState() {
     super.initState();
-    onCusDataHandler = (source, name, data) async {
-      print("=-----------------------111111111111--");
-      print(source);
-    };
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       w = Window.of(context);
       w?.on(EventType.WindowDragStart, (window, data) {
@@ -35,7 +31,7 @@ class _NonrmalViewState extends State<NonrmalView> {
 
   _changeSize() {
     _expend = !_expend;
-    _size = _expend ? 250 : 150;
+    _size = _expend ? 400 : 300;
     setState(() {});
   }
 
