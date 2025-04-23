@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="feat(example): 添加窗口间通信功能并更新相关配置&#10;&#10;- 在 AndroidManifest.xml 中添加了必要的权限- 更新了 compileSdkVersion 和 targetSdkVersion 到最新版本&#10;- 在 assistive_touch 和 normal 视图中实现了窗口间通信的处理逻辑&#10;- 在主入口文件中注册了窗口间通信的处理器">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/views/normal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/views/normal1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/views/normal2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal2.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_floatwing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_floatwing.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +48,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -75,22 +79,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Flutter.example/lib/main.dart.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;flutter.settings&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.example/lib/main.dart.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/workPress/flutter/flutter_floatwing/example/lib/views",
+    "settings.editor.selected.configurable": "flutter.settings",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workPress\flutter\flutter_floatwing\example\lib\views" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -132,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745370583589</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图">
+      <option name="closed" value="true" />
+      <created>1745425077582</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1745425077582</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -146,7 +164,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -157,17 +187,11 @@
     <MESSAGE value="refactor(window): 优化 Window 类代码结构&#10;&#10;- 调整代码格式，提高可读性- 移除冗余的空行和括号&#10;- 优化部分变量和方法的命名&#10;- 简化某些代码逻辑，提高效率" />
     <MESSAGE value="feat(window): 添加全局数据处理器- 新增 onGlobalDataHandler变量作为全局数据处理函数- 在 Window 类的 onData 方法中添加全局数据处理逻辑&#10;- 提供了默认的空实现，确保调用时不会抛出异常" />
     <MESSAGE value="feat(example): 添加窗口间通信功能并更新相关配置&#10;&#10;- 在 AndroidManifest.xml 中添加了必要的权限- 更新了 compileSdkVersion 和 targetSdkVersion 到最新版本&#10;- 在 assistive_touch 和 normal 视图中实现了窗口间通信的处理逻辑&#10;- 在主入口文件中注册了窗口间通信的处理器" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(example): 添加窗口间通信功能并更新相关配置&#10;&#10;- 在 AndroidManifest.xml 中添加了必要的权限- 更新了 compileSdkVersion 和 targetSdkVersion 到最新版本&#10;- 在 assistive_touch 和 normal 视图中实现了窗口间通信的处理逻辑&#10;- 在主入口文件中注册了窗口间通信的处理器" />
+    <MESSAGE value="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
-          <line>100</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="dart-exception" />
       </default-breakpoints>
