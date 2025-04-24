@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floatwing/flutter_floatwing.dart';
 
+// 添加主应用消息处理器类型定义
+typedef MainAppMessageHandler = void Function(Map<String, dynamic> message);
+
 class FloatwingPlugin {
   FloatwingPlugin._() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +17,9 @@ class FloatwingPlugin {
   static const String channelID = "im.zoe.labs/flutter_floatwing";
 
   static final MethodChannel _channel = MethodChannel('$channelID/method');
+  // 添加主应用消息通道
+  static final MethodChannel _mainAppChannel = MethodChannel('$channelID/main_app');
+  static MainAppMessageHandler? _mainAppMessageHandler;
 
   static final FloatwingPlugin _instance = FloatwingPlugin._();
 
@@ -32,6 +38,34 @@ class FloatwingPlugin {
 
   FloatwingPlugin get instance {
     return _instance;
+  }
+
+  // 添加设置主应用消息处理器的方法
+  void setMainAppMessageHandler(MainAppMessageHandler handler) {
+    _mainAppMessageHandler = handler;
+    _mainAppChannel.setMethodCallHandler(_handleMainAppMessage);
+  }
+
+  // 添加主应用消息处理方法
+  Future<dynamic> _handleMainAppMessage(MethodCall call) async {
+    if (call.method == 'onMessage' && _mainAppMessageHandler != null) {
+      _mainAppMessageHandler!(Map<String, dynamic>.from(call.arguments));
+    }
+    return null;
+  }
+
+  // 添加从悬浮窗发送消息到主应用的方法
+  Future<dynamic> sendToMainApp(Map<String, dynamic> message) async {
+    try {
+      log("[plugin] sending message to main app: $message");
+      return await _channel.invokeMethod("sendToMainApp", message)
+          .timeout(const Duration(seconds: 5), onTimeout: () {
+        throw TimeoutException("Send to main app operation timed out");
+      });
+    } catch (e) {
+      log("[plugin] send to main app error: $e");
+      rethrow;
+    }
   }
 
   Future<bool> syncWindows() async {

@@ -79,6 +79,37 @@ class _NonrmalView1State extends State<NonrmalView1> {
     }
   }
 
+  _sendToMainApp() async {
+    try {
+      print("Normal1 sending message to main app");
+      // 使用 FloatwingPlugin 发送消息到主应用
+      var response = await FloatwingPlugin().sendToMainApp({
+        "source": w?.id ?? "normal1",
+        "data": "这是来自 normal1 窗口发送到主应用的消息",
+        "name": "toMainApp",
+      });
+      
+      if (mounted) {
+        setState(() {
+          _messages.add("发送到主应用的消息已发送，响应: $response");
+          if (_messages.length > 5) {
+            _messages.removeAt(0);
+          }
+        });
+      }
+    } catch (e) {
+      print("Normal1 sending to main app error: $e");
+      if (mounted) {
+        setState(() {
+          _messages.add("发送到主应用的消息失败: $e");
+          if (_messages.length > 5) {
+            _messages.removeAt(0);
+          }
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -119,6 +150,16 @@ class _NonrmalView1State extends State<NonrmalView1> {
                         onPressed: () => _sendMessage("normal2"),
                         child: Text("发 normal2"),
                       ),
+                      ElevatedButton(
+                        onPressed: () => _sendToMainApp(),
+                        child: Text("发送到主应用"),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       ElevatedButton(
                         onPressed: () {
                           WindowConfig(

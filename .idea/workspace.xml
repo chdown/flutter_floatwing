@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/views/normal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatwingService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatwingService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FlutterFloatwingPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FlutterFloatwingPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/views/normal1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal1.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/views/normal2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal2.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_floatwing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_floatwing.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/plugin.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +93,7 @@
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/workPress/flutter/flutter_floatwing/example/lib/views",
-    "settings.editor.selected.configurable": "flutter.settings",
+    "settings.editor.selected.configurable": "vcs.Git",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>

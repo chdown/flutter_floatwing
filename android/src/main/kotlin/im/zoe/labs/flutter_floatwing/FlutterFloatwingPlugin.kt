@@ -28,6 +28,7 @@ class FlutterFloatwingPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, P
   private lateinit var mContext: Context
   private lateinit var mActivity: Activity
   private lateinit var channel : MethodChannel
+  private lateinit var mainAppChannel : MethodChannel
   private lateinit var engine: FlutterEngine
   private lateinit var waitPermissionResult: Result
 
@@ -40,6 +41,10 @@ class FlutterFloatwingPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, P
     // should window's engine install method channel?
     channel = MethodChannel(binding.binaryMessenger, CHANNEL_NAME)
     channel.setMethodCallHandler(this)
+
+    // 初始化主应用消息通道
+    mainAppChannel = MethodChannel(binding.binaryMessenger, "$METHOD_CHANNEL/main_app")
+    mainAppChannel.setMethodCallHandler(this)
 
     // how to known i'm a window engine not the main one?
     // if contains engine already, means we are coming from window
@@ -168,6 +173,20 @@ class FlutterFloatwingPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, P
         Log.d(TAG, "[plugin] fake window.sync")
         return result.success(null)
       }
+      // 处理发送到主应用的消息
+      "sendToMainApp" -> {
+        if (isMain) {
+          Log.d(TAG, "[plugin] received sendToMainApp in main app: ${call.arguments}")
+          // 在主应用中，转发消息到Flutter端
+          mainAppChannel.invokeMethod("onMessage", call.arguments)
+          return result.success("消息已在主应用接收")
+        } else {
+          Log.d(TAG, "[plugin] received sendToMainApp in window, forwarding to main app")
+          // 在悬浮窗中，转发消息到主应用的FloatwingService
+          FloatwingService.sendToMainApp(call.arguments)
+          return result.success("消息已转发到主应用")
+        }
+      }
       else -> {
         Log.d(TAG, "[plugin] method ${call.method} not implement")
         result.notImplemented()
@@ -235,6 +254,7 @@ class FlutterFloatwingPlugin: FlutterPlugin, ActivityAware, MethodCallHandler, P
 
     private const val TAG = "FloatwingPlugin"
     private const val CHANNEL_NAME = "im.zoe.labs/flutter_floatwing/method"
+    private const val METHOD_CHANNEL = "im.zoe.labs/flutter_floatwing"
     private const val ALERT_WINDOW_PERMISSION = 1248
 
     const val FLUTTER_ENGINE_CACHE_KEY = "flutter_engine_main"

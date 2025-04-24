@@ -83,6 +83,9 @@ class _MyAppState extends State<MyApp> {
     _configs.forEach((c) => {
           if (c.route != null && _builders[c.id] != null) {_routes[c.route!] = _builders[c.id]!.floatwing(debug: false)}
         });
+        
+    // 初始化FloatwingPlugin
+    FloatwingPlugin().initialize();
   }
 
   @override
@@ -110,9 +113,23 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     widget.configs.forEach((c) => _windows.add(c.to()));
 
-    FloatwingPlugin().initialize();
+    // 注册主应用消息处理器
+    FloatwingPlugin().setMainAppMessageHandler(_handleFloatwingMessage);
 
     initAsyncState();
+  }
+
+  // 处理来自悬浮窗的消息
+  void _handleFloatwingMessage(Map<String, dynamic> message) {
+    print("主应用收到消息: $message");
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("收到来自 ${message['source']} 的消息: ${message['data']}"),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   List<Window> _windows = [];
@@ -217,10 +234,28 @@ class _HomePageState extends State<HomePage> {
                     onPressed: (_readys[w] == true) ? () => {w.close(), w.share("close")} : null,
                     child: Text("Close", style: TextStyle(color: Colors.red)),
                   ),
+                  TextButton(
+                    onPressed: (_readys[w] == true) ? () => _sendMessage(w) : null,
+                    child: Text("发送消息"),
+                  ),
                 ],
               )
             ],
           )),
     );
+  }
+
+  _sendMessage(Window w) async {
+    try {
+      // 发送消息到指定窗口
+      final result = await w.share(
+        "这是一条来自主应用的消息",
+        name: "test",
+        targetId: w.id,
+      );
+      print("消息发送结果: $result");
+    } catch (e) {
+      print("发送消息失败: $e");
+    }
   }
 }

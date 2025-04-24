@@ -434,6 +434,22 @@ class FloatwingService : MethodChannel.MethodCallHandler, BasicMessageChannel.Me
             mActivityClass = mActivity?.javaClass
         }
 
+        // 添加从悬浮窗发送消息到主应用的方法
+        fun sendToMainApp(message: Any?): Boolean {
+            Log.i(TAG, "[service] sending message to main app: $message")
+            
+            // 获取主引擎实例
+            val mainEngine = FlutterEngineCache.getInstance().get(FlutterFloatwingPlugin.FLUTTER_ENGINE_CACHE_KEY) ?: return false
+            
+            // 创建主应用消息通道并发送消息
+            val mainAppChannel = MethodChannel(mainEngine.dartExecutor.binaryMessenger,
+                "$METHOD_CHANNEL/main_app")
+            
+            // 异步调用，不阻塞当前线程
+            mainAppChannel.invokeMethod("onMessage", message)
+            return true
+        }
+
         fun installChannel(eng: FlutterEngine): Boolean {
             Log.i(TAG, "[service] install the service channel for engine")
             return instance?.installChannel(eng) ?: false
