@@ -22,7 +22,7 @@ class _NonrmalView1State extends State<NonrmalView1> {
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       w = Window.of(context);
       print("Normal1 window initialized with id: ${w?.id}");
-      
+
       w?.on(EventType.WindowDragStart, (window, data) {
         if (mounted) setState(() => {dragging = true});
       }).on(EventType.WindowDragEnd, (window, data) {
@@ -83,12 +83,8 @@ class _NonrmalView1State extends State<NonrmalView1> {
     try {
       print("Normal1 sending message to main app");
       // 使用 FloatwingPlugin 发送消息到主应用
-      var response = await FloatwingPlugin().sendToMainApp({
-        "source": w?.id ?? "normal1",
-        "data": "这是来自 normal1 窗口发送到主应用的消息",
-        "name": "toMainApp",
-      });
-      
+      var response = await FloatwingPlugin().sendToMainApp(source: w?.id, name: '这是来自 normal1 窗口发送到主应用的消息', data: "1212");
+
       if (mounted) {
         setState(() {
           _messages.add("发送到主应用的消息已发送，响应: $response");
@@ -122,8 +118,7 @@ class _NonrmalView1State extends State<NonrmalView1> {
             children: [
               Column(
                 children: [
-                  Text("Normal1窗口", 
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text("Normal1窗口", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   // 消息显示区域
                   Expanded(
@@ -132,8 +127,7 @@ class _NonrmalView1State extends State<NonrmalView1> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Text(_messages[index], 
-                            style: TextStyle(fontSize: 12)),
+                          child: Text(_messages[index], style: TextStyle(fontSize: 12)),
                         );
                       },
                     ),
@@ -177,16 +171,10 @@ class _NonrmalView1State extends State<NonrmalView1> {
               ),
               Positioned(right: 5, top: 5, child: Icon(Icons.drag_handle_rounded)),
               Positioned(
-                right: 5,
-                bottom: 5,
-                child: RotationTransition(
-                  turns: AlwaysStoppedAnimation(-45 / 360),
-                  child: InkWell(
-                    onTap: _changeSize,
-                    child: Icon(Icons.unfold_more_rounded)
-                  )
-                )
-              ),
+                  right: 5,
+                  bottom: 5,
+                  child:
+                      RotationTransition(turns: AlwaysStoppedAnimation(-45 / 360), child: InkWell(onTap: _changeSize, child: Icon(Icons.unfold_more_rounded)))),
             ],
           ),
         ),

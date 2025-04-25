@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_floatwing/flutter_floatwing.dart';
 
 // 添加主应用消息处理器类型定义
-typedef MainAppMessageHandler = void Function(Map<String, dynamic> message);
+typedef MainAppMessageHandler = void Function(String? source, String name, dynamic data);
 
 class FloatwingPlugin {
   FloatwingPlugin._() {
@@ -17,6 +17,7 @@ class FloatwingPlugin {
   static const String channelID = "im.zoe.labs/flutter_floatwing";
 
   static final MethodChannel _channel = MethodChannel('$channelID/method');
+
   // 添加主应用消息通道
   static final MethodChannel _mainAppChannel = MethodChannel('$channelID/main_app');
   static MainAppMessageHandler? _mainAppMessageHandler;
@@ -29,7 +30,9 @@ class FloatwingPlugin {
   bool _isWindow = false;
 
   Map<String, Window> get windows => _windows;
+
   Window? get currentWindow => _window;
+
   bool get isWindow => _isWindow;
 
   factory FloatwingPlugin() {
@@ -49,14 +52,20 @@ class FloatwingPlugin {
   // 添加主应用消息处理方法
   Future<dynamic> _handleMainAppMessage(MethodCall call) async {
     if (call.method == 'onMessage' && _mainAppMessageHandler != null) {
-      _mainAppMessageHandler!(Map<String, dynamic>.from(call.arguments));
+      Map<String, dynamic> message =  Map<String, dynamic>.from(call.arguments);
+      _mainAppMessageHandler!(message["source"], message["name"], message["data"]);
     }
     return null;
   }
 
   // 添加从悬浮窗发送消息到主应用的方法
-  Future<dynamic> sendToMainApp(Map<String, dynamic> message) async {
+  Future<dynamic> sendToMainApp({String? source, required String name, required dynamic data}) async {
     try {
+      final message = {
+        "source": source ?? FloatwingPlugin().currentWindow?.id,
+        "data": data,
+        "name": name,
+      };
       log("[plugin] sending message to main app: $message");
       return await _channel.invokeMethod("sendToMainApp", message)
           .timeout(const Duration(seconds: 5), onTimeout: () {
@@ -119,12 +128,11 @@ class FloatwingPlugin {
     return await _channel.invokeMethod("plugin.clean_cache");
   }
 
-  Future<Window?> createWindow(
-    String? id,
-    WindowConfig config, {
-    bool start = false,
-    Window? window,
-  }) async {
+  Future<Window?> createWindow(String? id,
+      WindowConfig config, {
+        bool start = false,
+        Window? window,
+      }) async {
     var w = isWindow
         ? await currentWindow?.createChildWindow(id, config, start: start, window: window)
         : await internalCreateWindow(id, config, start: start, window: window, channel: _channel);
@@ -133,14 +141,13 @@ class FloatwingPlugin {
     return w;
   }
 
-  Future<Window?> internalCreateWindow(
-    String? id,
-    WindowConfig config, {
-    bool start = false,
-    Window? window,
-    required MethodChannel channel,
-    String name = "plugin.create_window",
-  }) async {
+  Future<Window?> internalCreateWindow(String? id,
+      WindowConfig config, {
+        bool start = false,
+        Window? window,
+        required MethodChannel channel,
+        String name = "plugin.create_window",
+      }) async {
     if (!await checkPermission()) {
       throw Exception("no permission to create window");
     }

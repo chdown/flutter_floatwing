@@ -120,12 +120,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   // 处理来自悬浮窗的消息
-  void _handleFloatwingMessage(Map<String, dynamic> message) {
-    print("主应用收到消息: $message");
+  void _handleFloatwingMessage(String? source, String name, dynamic data) {
+    print("主应用收到消息: $data");
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("收到来自 ${message['source']} 的消息: ${message['data']}"),
+          content: Text("收到来自 $source 的消息: $data"),
           duration: Duration(seconds: 3),
         ),
       );
