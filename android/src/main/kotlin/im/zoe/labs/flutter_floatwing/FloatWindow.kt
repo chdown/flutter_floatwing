@@ -23,7 +23,7 @@ import io.flutter.plugin.common.MethodChannel
 
 @SuppressLint("ClickableViewAccessibility")
 class FloatWindow(
-    context: Context,
+    val context: Context,
     wmr: WindowManager,
     engKey: String,
     eng: FlutterEngine,
@@ -60,7 +60,7 @@ class FloatWindow(
     var _started = false
 
     fun init(): FloatWindow {
-        layoutParams = config.to()
+        layoutParams = config.to(context)
 
         config.focusable?.let{
             view.isFocusable = it
@@ -112,7 +112,7 @@ class FloatWindow(
     fun update(cfg: Config): Map<String, Any?> {
         Log.d(TAG, "[window] update window $key => $cfg")
         config = config.update(cfg).also {
-            layoutParams = it.to()
+            layoutParams = it.to(context)
             if (_started) wm.updateViewLayout(view, layoutParams)
         }
         return toMap()
@@ -303,6 +303,12 @@ class FloatWindow(
             // how to get data back
             return null
         }
+
+        // 添加 WindowSize 常量
+        object WindowSize {
+            const val MatchParent = -1
+            const val WrapContent = -2
+        }
     }
 
     // window is dragging
@@ -396,9 +402,12 @@ class FloatWindow(
 
         var visible: Boolean? = null
 
+        var marginVertical: Double? = null;
+        var offsetX: Double? = null;
 
         // inline fun <reified T: Any?>to(): T {
-        fun to(): LayoutParams {
+        fun to(tmpContext: Context): LayoutParams {
+            var context = tmpContext
             val cfg = this
             return LayoutParams().apply {
                 // set size
@@ -457,6 +466,9 @@ class FloatWindow(
 
             map["visible"] = visible
 
+            map["marginVertical"] = marginVertical
+            map["offsetX"] = offsetX
+
             return map
         }
 
@@ -481,6 +493,9 @@ class FloatWindow(
             cfg.immersion?.let { immersion = it }
 
             cfg.visible?.let { visible = it }
+
+            cfg.marginVertical?.let { marginVertical = it }
+            cfg.offsetX?.let { offsetX = it }
 
             return this
         }
@@ -520,6 +535,9 @@ class FloatWindow(
                 cfg.immersion = data["immersion"] as Boolean?
 
                 cfg.visible = data["visible"] as Boolean?
+
+                cfg.marginVertical = data["marginVertical"] as Double?
+                cfg.offsetX = data["offsetX"] as Double?
 
                 return cfg
             }
