@@ -37,7 +37,9 @@ class _MyAppState extends State<MyApp> {
       // entry: "floatwing",
       route: "/normal",
       draggable: true,
-      autosize: true,
+      width: 600,
+      height: 600,
+      autosize: false,
     ),
     WindowConfig(
       id: "normal1",

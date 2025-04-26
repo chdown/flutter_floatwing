@@ -76,62 +76,81 @@ class _NonrmalViewState extends State<NonrmalView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: _size,
-        height: _size,
-        color: dragging ? Colors.yellowAccent : null,
-        child: Card(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Text("Normal窗口", 
+    return Container(
+      // width: _size,
+      // height: _size,
+      color: dragging ? Colors.yellowAccent : null,
+      child: Card(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Text("Normal窗口",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  // 消息显示区域
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _messages.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          child: Text(_messages[index], 
+                SizedBox(height: 10),
+                // 消息显示区域
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        child: Text(_messages[index],
                             style: TextStyle(fontSize: 12)),
-                        );
-                      },
+                      );
+                    },
+                  ),
+                ),
+                // 发送消息按钮
+                Wrap(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => _sendMessage("normal1"),
+                      child: Text("发 normal1"),
                     ),
-                  ),
-                  // 发送消息按钮
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => _sendMessage("normal1"),
-                        child: Text("发 normal1"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => _sendMessage("normal2"),
-                        child: Text("发 normal2"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Positioned(right: 5, top: 5, child: Icon(Icons.drag_handle_rounded)),
-              Positioned(
+                    ElevatedButton(
+                      onPressed: () => _sendMessage("normal2"),
+                      child: Text("发 normal2"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        WindowConfig? config = w?.config;
+                        config?.width = WindowSize.MatchParent;
+                        config?.height = WindowSize.MatchParent;
+                        if (config != null) {
+                          w?.update(config);
+                        }
+                      },
+                      child: Text("full"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        WindowConfig? config = w?.config;
+                        config?.width = WindowSize.WrapContent;
+                        config?.height = WindowSize.WrapContent;
+                        if (config != null) {
+                          w?.update(config);
+                        }
+                      },
+                      child: Text("small"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Positioned(right: 5, top: 5, child: Icon(Icons.drag_handle_rounded)),
+            Positioned(
                 right: 5,
                 bottom: 5,
                 child: RotationTransition(
-                  turns: AlwaysStoppedAnimation(-45 / 360),
-                  child: InkWell(
-                    onTap: _changeSize,
-                    child: Icon(Icons.unfold_more_rounded)
-                  )
+                    turns: AlwaysStoppedAnimation(-45 / 360),
+                    child: InkWell(
+                        onTap: _changeSize,
+                        child: Icon(Icons.unfold_more_rounded)
+                    )
                 )
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

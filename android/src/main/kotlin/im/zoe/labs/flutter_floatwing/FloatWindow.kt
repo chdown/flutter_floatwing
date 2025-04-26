@@ -411,8 +411,24 @@ class FloatWindow(
             val cfg = this
             return LayoutParams().apply {
                 // set size
-                width = cfg.width ?: 1 // we must have 1 pixel, let flutter can generate the pixel radio
-                height = cfg.height ?: 1 // we must have 1 pixel, let flutter can generate the pixel radio
+                val displayMetrics = context.resources.displayMetrics
+                val screenWidth = displayMetrics.widthPixels
+                val screenHeight = displayMetrics.heightPixels
+
+                Log.d(TAG, "[window] screen size: width=$screenWidth, height=$screenHeight")
+                Log.d(TAG, "[window] config size: width=${cfg.width}, height=${cfg.height}")
+
+                width = when (cfg.width) {
+                    -1 -> screenWidth
+                    else -> cfg.width ?: 1
+                }
+
+                height = when (cfg.height) {
+                    -1 -> screenHeight
+                    else -> cfg.height ?: 1
+                }
+
+                Log.d(TAG, "[window] final size: width=$width, height=$height")
 
                 // set position fixed if with (x, y)
                 cfg.x?.let { x = it } // default not set
@@ -473,6 +489,7 @@ class FloatWindow(
         }
 
         fun update(cfg: Config): Config {
+            Log.d(TAG, "[window] config update: width=${cfg.width}, height=${cfg.height}")
             // entry, route, callback shouldn't be updated
 
             cfg.autosize?.let { autosize = it }

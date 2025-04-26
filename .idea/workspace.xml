@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="feat(example): 实现主应用与悬浮窗的消息通信功能&#10;&#10;- 新增从悬浮窗发送消息到主应用的方法&#10;- 实现主应用接收和处理悬浮窗消息的功能- 添加消息发送和接收的示例代码&#10;- 优化项目配置，支持新的消息通信功能">
+    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="refactor/android: 优化 FloatWindow 类并添加新功能&#10;&#10;-将 FloatWindow 的构造函数参数 context 设为 val，便于在类内部使用&#10;- 修改 init 和 update函数，使用传入的 context 参数&#10;- 添加 WindowSize 对象，包含 MatchParent 和 WrapContent常量&#10;- 在 Config 类中添加 marginVertical 和 offsetX 字段- 更新 toMap 和 fromMap函数，支持新添加的字段">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatWindow.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatWindow.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/views/normal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/window.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/window.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745588688387</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="refactor/android: 优化 FloatWindow 类并添加新功能&#10;&#10;-将 FloatWindow 的构造函数参数 context 设为 val，便于在类内部使用&#10;- 修改 init 和 update函数，使用传入的 context 参数&#10;- 添加 WindowSize 对象，包含 MatchParent 和 WrapContent常量&#10;- 在 Config 类中添加 marginVertical 和 offsetX 字段- 更新 toMap 和 fromMap函数，支持新添加的字段">
+      <option name="closed" value="true" />
+      <created>1745650762295</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1745650762295</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -202,7 +213,8 @@
     <MESSAGE value="feat(example): 添加窗口间通信功能并更新相关配置&#10;&#10;- 在 AndroidManifest.xml 中添加了必要的权限- 更新了 compileSdkVersion 和 targetSdkVersion 到最新版本&#10;- 在 assistive_touch 和 normal 视图中实现了窗口间通信的处理逻辑&#10;- 在主入口文件中注册了窗口间通信的处理器" />
     <MESSAGE value="feat(example): 添加新的正常窗口示例&#10;&#10;- 新增 normal1 和 normal2 两个正常窗口视图&#10;- 实现窗口拖拽、大小变换等功能&#10;- 添加按钮触发其他窗口或操作&#10;- 更新 main.dart 配置，支持新视图" />
     <MESSAGE value="feat(example): 实现主应用与悬浮窗的消息通信功能&#10;&#10;- 新增从悬浮窗发送消息到主应用的方法&#10;- 实现主应用接收和处理悬浮窗消息的功能- 添加消息发送和接收的示例代码&#10;- 优化项目配置，支持新的消息通信功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(example): 实现主应用与悬浮窗的消息通信功能&#10;&#10;- 新增从悬浮窗发送消息到主应用的方法&#10;- 实现主应用接收和处理悬浮窗消息的功能- 添加消息发送和接收的示例代码&#10;- 优化项目配置，支持新的消息通信功能" />
+    <MESSAGE value="refactor/android: 优化 FloatWindow 类并添加新功能&#10;&#10;-将 FloatWindow 的构造函数参数 context 设为 val，便于在类内部使用&#10;- 修改 init 和 update函数，使用传入的 context 参数&#10;- 添加 WindowSize 对象，包含 MatchParent 和 WrapContent常量&#10;- 在 Config 类中添加 marginVertical 和 offsetX 字段- 更新 toMap 和 fromMap函数，支持新添加的字段" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor/android: 优化 FloatWindow 类并添加新功能&#10;&#10;-将 FloatWindow 的构造函数参数 context 设为 val，便于在类内部使用&#10;- 修改 init 和 update函数，使用传入的 context 参数&#10;- 添加 WindowSize 对象，包含 MatchParent 和 WrapContent常量&#10;- 在 Config 类中添加 marginVertical 和 offsetX 字段- 更新 toMap 和 fromMap函数，支持新添加的字段" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

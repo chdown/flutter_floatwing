@@ -116,12 +116,12 @@ class Window {
 
   Future<bool> update(WindowConfig cfg) async {
     // update window with config, config con't update with id, entry, route
-    var size = config?.size;
-    if (size != null && size < Size.zero) {
-      // special case, should updated
-      cfg.width = null;
-      cfg.height = null;
-    }
+    // var size = config?.size;
+    // if (size != null && size < Size.zero) {
+    //   // special case, should updated
+    //   cfg.width = null;
+    //   cfg.height = null;
+    // }
     var updates = await _channel.invokeMapMethod("window.update", {
       "id": id,
       // don't set pixelRadio
