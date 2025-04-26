@@ -224,8 +224,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text(w.config?.toString() ?? ""),
               ),
               SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Wrap(
                 children: [
                   TextButton(
                     onPressed: (_readys[w] == true) ? () => w.start() : null,
@@ -237,8 +236,16 @@ class _HomePageState extends State<HomePage> {
                     child: Text("Close", style: TextStyle(color: Colors.red)),
                   ),
                   TextButton(
+                    onPressed: (_readys[w] == true) ? () => {w.show(visible: false), w.share("close")} : null,
+                    child: Text("Hide", style: TextStyle(color: Colors.red)),
+                  ),
+                  TextButton(
+                    onPressed: (_readys[w] == true) ? () => {w.show(visible: true), w.share("close")} : null,
+                    child: Text("Show", style: TextStyle(color: Colors.red)),
+                  ),
+                  TextButton(
                     onPressed: (_readys[w] == true) ? () => _sendMessage(w) : null,
-                    child: Text("发送消息"),
+                    child: Text("send"),
                   ),
                 ],
               )

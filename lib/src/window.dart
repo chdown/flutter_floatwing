@@ -145,6 +145,20 @@ class Window {
     });
   }
 
+  /// 查询目标悬浮窗是否显示
+  /// [targetId] 要查询的窗口ID
+  Future<bool> isShow(String targetId) async {
+    try {
+      print("Window[$id] checking visibility of window[$targetId]");
+      return await _channel.invokeMethod("window.is_show", {
+        "targetId": targetId,
+      });
+    } catch (e) {
+      print("Window[$id] isShow error: $e");
+      return false;
+    }
+  }
+
   /// share data with current window
   /// send data use current window id as target id
   /// and get value return

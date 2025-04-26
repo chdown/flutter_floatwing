@@ -85,8 +85,7 @@ class _NonrmalViewState extends State<NonrmalView> {
           children: [
             Column(
               children: [
-                Text("Normal窗口",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text("Normal窗口", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
                 // 消息显示区域
                 Expanded(
@@ -95,8 +94,7 @@ class _NonrmalViewState extends State<NonrmalView> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        child: Text(_messages[index],
-                            style: TextStyle(fontSize: 12)),
+                        child: Text(_messages[index], style: TextStyle(fontSize: 12)),
                       );
                     },
                   ),
@@ -134,6 +132,13 @@ class _NonrmalViewState extends State<NonrmalView> {
                       },
                       child: Text("small"),
                     ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        bool isShow = await w?.isShow("normal1") ?? false;
+                        print("=================$isShow");
+                      },
+                      child: Text("isShow"),
+                    ),
                   ],
                 ),
               ],
@@ -142,14 +147,8 @@ class _NonrmalViewState extends State<NonrmalView> {
             Positioned(
                 right: 5,
                 bottom: 5,
-                child: RotationTransition(
-                    turns: AlwaysStoppedAnimation(-45 / 360),
-                    child: InkWell(
-                        onTap: _changeSize,
-                        child: Icon(Icons.unfold_more_rounded)
-                    )
-                )
-            ),
+                child:
+                    RotationTransition(turns: AlwaysStoppedAnimation(-45 / 360), child: InkWell(onTap: _changeSize, child: Icon(Icons.unfold_more_rounded)))),
           ],
         ),
       ),

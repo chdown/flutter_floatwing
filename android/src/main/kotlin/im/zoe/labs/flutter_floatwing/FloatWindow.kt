@@ -251,6 +251,18 @@ class FloatWindow(
                 val visible = call.argument<Boolean>("visible") ?: true
                 return result.success(take(id)?.setVisible(visible))
             }
+            "window.is_show" -> {
+                val targetId = call.argument<String>("targetId") ?: return result.error("invalid", "targetId is required", null)
+                Log.d(TAG, "[window] window.is_show request_id: $targetId, my_id: $key")
+                val targetWindow = take(targetId)
+                if (targetWindow == null) {
+                    Log.d(TAG, "[window] window[$targetId] not found")
+                    return result.success(false)
+                }
+                val isVisible = targetWindow.view.visibility == View.VISIBLE
+                Log.d(TAG, "[window] window[$targetId] visibility: $isVisible")
+                return result.success(isVisible)
+            }
             "window.launch_main" -> {
                 Log.d(TAG, "[window] window.launch_main")
                 return result.success(service.launchMainActivity())
