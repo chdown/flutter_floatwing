@@ -103,6 +103,10 @@ class _NonrmalViewState extends State<NonrmalView> {
                 Wrap(
                   children: [
                     ElevatedButton(
+                      onPressed: () => _sendMessage("normal"),
+                      child: Text("发 normal"),
+                    ),
+                    ElevatedButton(
                       onPressed: () => _sendMessage("normal1"),
                       child: Text("发 normal1"),
                     ),

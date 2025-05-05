@@ -283,10 +283,10 @@ class FloatWindow(
                     Log.d(TAG, "[window] share data with plugin")
                     return result.success(shareData(service._channel, args, source=key, result=result))
                 }
-                if (targetId == key) {
-                    Log.d(TAG, "[window] can't share data with self")
-                    return result.error("no allow", "share data from $key to $targetId", "")
-                }
+//                if (targetId == key) {
+//                    Log.d(TAG, "[window] can't share data with self")
+//                    return result.error("no allow", "share data from $key to $targetId", "")
+//                }
                 val target = service.windows[targetId]
                     ?: return result.error("not found", "target window $targetId not exits", "");
                 return target.shareData(args, source=key, result=result)
