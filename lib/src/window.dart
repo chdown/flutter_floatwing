@@ -261,6 +261,11 @@ class WindowConfig {
   double? marginVertical;
   double? offsetX;
 
+  // windows平台中使用
+  double? widthPercent;
+  double? heightPercent;
+  double? offsetXPercent;
+
   /// we need this for update, so must wihtout default value
   WindowConfig({
     this.id = "default",
@@ -282,6 +287,9 @@ class WindowConfig {
     this.visible,
     this.marginVertical,
     this.offsetX,
+    this.widthPercent,
+    this.heightPercent,
+    this.offsetXPercent,
   }) : assert(callback == null || PluginUtilities.getCallbackHandle(callback) != null, "callback is not a static function");
 
   factory WindowConfig.fromMap(Map<dynamic, dynamic> map) {
@@ -315,6 +323,9 @@ class WindowConfig {
 
       marginVertical: map["marginVertical"],
       offsetX: map["offsetX"],
+      widthPercent: map["widthPercent"],
+      heightPercent: map["heightPercent"],
+      offsetXPercent: map["offsetXPercent"],
     );
   }
 
@@ -347,6 +358,9 @@ class WindowConfig {
 
     map["marginVertical"] = marginVertical;
     map["offsetX"] = offsetX;
+    map["widthPercent"] = widthPercent;
+    map["heightPercent"] = heightPercent;
+    map["offsetXPercent"] = offsetXPercent;
 
     return map;
   }
