@@ -27,7 +27,8 @@ class FloatWindow(
     wmr: WindowManager,
     engKey: String,
     eng: FlutterEngine,
-    cfg: Config): View.OnTouchListener, MethodChannel.MethodCallHandler,
+    cfg: Config
+) : View.OnTouchListener, MethodChannel.MethodCallHandler,
     BasicMessageChannel.MessageHandler<Any?> {
 
     var parent: FloatWindow? = null
@@ -50,11 +51,16 @@ class FloatWindow(
     lateinit var service: FloatwingService
 
     // method and message channel for window engine call
-    var _channel: MethodChannel = MethodChannel(eng.dartExecutor.binaryMessenger,
-        "${FloatwingService.METHOD_CHANNEL}/window").also {
-        it.setMethodCallHandler(this) }
-    var _message: BasicMessageChannel<Any?> = BasicMessageChannel(eng.dartExecutor.binaryMessenger,
-        "${FloatwingService.MESSAGE_CHANNEL}/window_msg", JSONMessageCodec.INSTANCE)
+    var _channel: MethodChannel = MethodChannel(
+        eng.dartExecutor.binaryMessenger,
+        "${FloatwingService.METHOD_CHANNEL}/window"
+    ).also {
+        it.setMethodCallHandler(this)
+    }
+    var _message: BasicMessageChannel<Any?> = BasicMessageChannel(
+        eng.dartExecutor.binaryMessenger,
+        "${FloatwingService.MESSAGE_CHANNEL}/window_msg", JSONMessageCodec.INSTANCE
+    )
         .also { it.setMessageHandler(this) }
 
     var _started = false
@@ -62,7 +68,7 @@ class FloatWindow(
     fun init(): FloatWindow {
         layoutParams = config.to(context)
 
-        config.focusable?.let{
+        config.focusable?.let {
             view.isFocusable = it
             view.isFocusableInTouchMode = it
         }
@@ -70,7 +76,7 @@ class FloatWindow(
         view.setBackgroundColor(Color.TRANSPARENT)
         view.fitsSystemWindows = true
 
-        config.visible?.let{ setVisible(it) }
+        config.visible?.let { setVisible(it) }
 
         view.setOnTouchListener(this)
 
@@ -146,7 +152,7 @@ class FloatWindow(
         shareData(_channel, data, source, result)
     }
 
-    fun simpleEmit(msgChannel: BasicMessageChannel<Any?>, name: String, data: Any?=null) {
+    fun simpleEmit(msgChannel: BasicMessageChannel<Any?>, name: String, data: Any? = null) {
         val map = HashMap<String, Any?>()
         map["name"] = name
         map["id"] = key // this is special for main engine
@@ -154,25 +160,25 @@ class FloatWindow(
         msgChannel.send(map)
     }
 
-    fun emit(name: String, data: Any? = null, prefix: String?="window", pluginNeed: Boolean = true) {
+    fun emit(name: String, data: Any? = null, prefix: String? = "window", pluginNeed: Boolean = true) {
         val evtName = "$prefix.$name"
         // Log.i(TAG, "[window] emit event: Window[$key] $name ")
 
         // check if need to send to my self
-        if (true||subscribedEvents.containsKey(name)||subscribedEvents.containsKey("*")) {
+        if (true || subscribedEvents.containsKey(name) || subscribedEvents.containsKey("*")) {
             // emit to window engine
             simpleEmit(_message, evtName, data)
         }
 
         // plugin
         // check if we need to fire to plugin
-        if (pluginNeed&&(true||service.subscribedEvents.containsKey("*")||service.subscribedEvents.containsKey(evtName))) {
+        if (pluginNeed && (true || service.subscribedEvents.containsKey("*") || service.subscribedEvents.containsKey(evtName))) {
             simpleEmit(service._message, evtName, data)
         }
 
         // emit parent engine
         // if fire to parent need have no need to fire to service again
-        if(parent!=null&&parent!=this) {
+        if (parent != null && parent != this) {
             parent!!.simpleEmit(parent!!._message, evtName, data)
         }
 
@@ -220,37 +226,47 @@ class FloatWindow(
                 val start = call.argument<Boolean>("start") ?: false
                 val config = FloatWindow.Config.from(cfg)
                 Log.d(TAG, "[service] window.create_child request_id: $id")
-                return result.success(FloatwingService.createWindow(service.applicationContext, id,
-                        config, start, this))
+                return result.success(
+                    FloatwingService.createWindow(
+                        service.applicationContext, id,
+                        config, start, this
+                    )
+                )
             }
+
             "window.close" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
                 Log.d(TAG, "[window] window.close request_id: $id, my_id: $key")
                 val force = call.argument("force") ?: false
                 return result.success(take(id)?.destroy(force))
             }
+
             "window.destroy" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
                 Log.d(TAG, "[window] window.destroy request_id: $id, my_id: $key")
                 return result.success(take(id)?.destroy(true))
             }
+
             "window.start" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
                 Log.d(TAG, "[window] window.start request_id: $id, my_id: $key")
                 return result.success(take(id)?.start())
             }
+
             "window.update" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
                 Log.d(TAG, "[window] window.update request_id: $id, my_id: $key")
                 val config = Config.from(call.argument<Map<String, *>>("config")!!)
                 return result.success(take(id)?.update(config))
             }
+
             "window.show" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
                 Log.d(TAG, "[window] window.show request_id: $id, my_id: $key")
                 val visible = call.argument<Boolean>("visible") ?: true
                 return result.success(take(id)?.setVisible(visible))
             }
+
             "window.is_show" -> {
                 val targetId = call.argument<String>("targetId") ?: return result.error("invalid", "targetId is required", null)
                 Log.d(TAG, "[window] window.is_show request_id: $targetId, my_id: $key")
@@ -263,17 +279,21 @@ class FloatWindow(
                 Log.d(TAG, "[window] window[$targetId] visibility: $isVisible")
                 return result.success(isVisible)
             }
+
             "window.launch_main" -> {
                 Log.d(TAG, "[window] window.launch_main")
                 return result.success(service.launchMainActivity())
             }
+
             "window.lifecycle" -> {
 
             }
+
             "event.subscribe" -> {
-                val id = call.argument<String?>("id")?:"<unset>"
+                val id = call.argument<String?>("id") ?: "<unset>"
 
             }
+
             "data.share" -> {
                 // communicate with other window, only 1 - 1 with id
                 val args = call.arguments as Map<*, *>
@@ -281,7 +301,7 @@ class FloatWindow(
                 Log.d(TAG, "[window] share data from $key with $targetId: $args")
                 if (targetId == null) {
                     Log.d(TAG, "[window] share data with plugin")
-                    return result.success(shareData(service._channel, args, source=key, result=result))
+                    return result.success(shareData(service._channel, args, source = key, result = result))
                 }
 //                if (targetId == key) {
 //                    Log.d(TAG, "[window] can't share data with self")
@@ -289,8 +309,9 @@ class FloatWindow(
 //                }
                 val target = service.windows[targetId]
                     ?: return result.error("not found", "target window $targetId not exits", "");
-                return target.shareData(args, source=key, result=result)
+                return target.shareData(args, source = key, result = result)
             }
+
             else -> {
                 result.notImplemented()
             }
@@ -304,8 +325,10 @@ class FloatWindow(
     companion object {
         private const val TAG = "FloatWindow"
 
-        fun shareData(channel: MethodChannel, data: Map<*, *>, source: String? = null,
-                      result: MethodChannel.Result? = null): Any? {
+        fun shareData(
+            channel: MethodChannel, data: Map<*, *>, source: String? = null,
+            result: MethodChannel.Result? = null
+        ): Any? {
             // id is the data comes from
             // invoke the method channel
             val map = HashMap<String, Any?>()
@@ -344,13 +367,14 @@ class FloatWindow(
                 lastY = event.rawY
                 // TODO: support generate around edge
             }
+
             MotionEvent.ACTION_MOVE -> {
                 // touch move
                 val dx = event.rawX - lastX
                 val dy = event.rawY - lastY
 
                 // ignore too small fist start moving(some time is click)
-                if (!dragging && dx*dx+dy*dy < 25) {
+                if (!dragging && dx * dx + dy * dy < 25) {
                     return false
                 }
 
@@ -376,11 +400,13 @@ class FloatWindow(
 
                 emit("dragging", listOf(xx, yy))
             }
+
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 // touch end
                 if (dragging) emit("drag_end", listOf(event.rawX, event.rawY))
                 return dragging
             }
+
             else -> {
                 return false
             }
@@ -417,6 +443,10 @@ class FloatWindow(
         var marginVertical: Double? = null;
         var offsetX: Double? = null;
 
+        var widthPercent: Double? = null;
+        var heightPercent: Double? = null;
+        var offsetXPercent: Double? = null;
+
         // inline fun <reified T: Any?>to(): T {
         fun to(tmpContext: Context): LayoutParams {
             var context = tmpContext
@@ -430,20 +460,32 @@ class FloatWindow(
                 Log.d(TAG, "[window] screen size: width=$screenWidth, height=$screenHeight")
                 Log.d(TAG, "[window] config size: width=${cfg.width}, height=${cfg.height}")
 
-                width = when (cfg.width) {
-                    -1 -> screenWidth
-                    else -> cfg.width ?: 1
+                if (cfg.widthPercent == null) {
+                    width = when (cfg.width) {
+                        -1 -> screenWidth
+                        else -> cfg.width ?: 1
+                    }
+                } else {
+                    width = (screenWidth * cfg.widthPercent!!).toInt()
                 }
 
-                height = when (cfg.height) {
-                    -1 -> screenHeight
-                    else -> cfg.height ?: 1
+                if (cfg.heightPercent == null) {
+                    height = when (cfg.height) {
+                        -1 -> screenHeight
+                        else -> cfg.height ?: 1
+                    }
+                }else{
+                    height = (screenHeight * cfg.heightPercent!!).toInt()
                 }
 
                 Log.d(TAG, "[window] final size: width=$width, height=$height")
 
-                // set position fixed if with (x, y)
-                cfg.x?.let { x = it } // default not set
+                if (cfg.offsetXPercent == null) {
+                    // set position fixed if with (x, y)
+                    cfg.x?.let { x = it } // default not set
+                }else{
+                    x = (screenWidth * cfg.offsetXPercent!!).toInt()
+                }
                 cfg.y?.let { y = it } // default not set
 
                 // format
@@ -455,12 +497,14 @@ class FloatWindow(
                 // default flags
                 flags = FLAG_LAYOUT_IN_SCREEN or FLAG_NOT_TOUCH_MODAL
                 // if immersion add flag no limit
-                cfg.immersion?.let{ if (it) flags = flags or FLAG_LAYOUT_NO_LIMITS }
+                cfg.immersion?.let { if (it) flags = flags or FLAG_LAYOUT_NO_LIMITS }
                 // default we should be clickable
                 // if not clickable, add flag not touchable
-                cfg.clickable?.let{ if (!it) flags = flags or FLAG_NOT_TOUCHABLE }
+                cfg.clickable?.let { if (!it) flags = flags or FLAG_NOT_TOUCHABLE }
                 // default we should be no focusable
-                if (cfg.focusable == null) { cfg.focusable = false }
+                if (cfg.focusable == null) {
+                    cfg.focusable = false
+                }
                 // if not focusable, add no focusable flag
                 cfg.focusable?.let { if (!it) flags = flags or FLAG_NOT_FOCUSABLE }
 
@@ -496,6 +540,9 @@ class FloatWindow(
 
             map["marginVertical"] = marginVertical
             map["offsetX"] = offsetX
+            map["widthPercent"] = widthPercent
+            map["heightPercent"] = heightPercent
+            map["offsetXPercent"] = offsetXPercent
 
             return map
         }
@@ -515,7 +562,7 @@ class FloatWindow(
             cfg.gravity?.let { gravity = it }
             cfg.type?.let { type = it }
 
-            cfg.clickable?.let{ clickable = it }
+            cfg.clickable?.let { clickable = it }
             cfg.draggable?.let { draggable = it }
             cfg.focusable?.let { focusable = it }
 
@@ -525,6 +572,9 @@ class FloatWindow(
 
             cfg.marginVertical?.let { marginVertical = it }
             cfg.offsetX?.let { offsetX = it }
+            cfg.widthPercent?.let { widthPercent = it }
+            cfg.heightPercent?.let { heightPercent = it }
+            cfg.offsetXPercent?.let { offsetXPercent = it }
 
             return this
         }
@@ -567,6 +617,9 @@ class FloatWindow(
 
                 cfg.marginVertical = data["marginVertical"] as Double?
                 cfg.offsetX = data["offsetX"] as Double?
+                cfg.widthPercent = data["widthPercent"] as Double?
+                cfg.heightPercent = data["heightPercent"] as Double?
+                cfg.offsetXPercent = data["offsetXPercent"] as Double?
 
                 return cfg
             }

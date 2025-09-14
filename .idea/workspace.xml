@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="refactor/android: 优化 FloatWindow 类并添加新功能&#10;&#10;-将 FloatWindow 的构造函数参数 context 设为 val，便于在类内部使用&#10;- 修改 init 和 update函数，使用传入的 context 参数&#10;- 添加 WindowSize 对象，包含 MatchParent 和 WrapContent常量&#10;- 在 Config 类中添加 marginVertical 和 offsetX 字段- 更新 toMap 和 fromMap函数，支持新添加的字段">
+    <list default="true" id="8206a1b2-2e86-4987-a077-1fa67b40ac5e" name="Changes" comment="feat(window): 添加 Windows 平台支持&#10;&#10;- 在 WindowConfig 类中添加 widthPercent、heightPercent 和 offsetXPercent 参数，用于 Windows 平台&#10;- 更新 pubspec.lock 文件，升级多个依赖至新版本&#10;- 修改 flutter_floatwing.iml，添加 .dart_tool 文件夹的排除规则">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatWindow.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/im/zoe/labs/flutter_floatwing/FloatWindow.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/views/normal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/views/normal.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/window.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/window.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,17 +57,16 @@
     &quot;assignee&quot;: &quot;chdown&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/chdown/flutter_floatwing&quot;,
-    &quot;accountId&quot;: &quot;f025eacc-8c6c-4f0e-a47d-01e321fde9a8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/chdown/flutter_floatwing.git",
+    "accountId": "43b73e1e-83ae-49de-88ac-c39845ab7b2f"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2vzsdIrReUMCBgnz24dDWgnhkW6" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" />
     <panes>
@@ -79,23 +79,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Flutter.example/lib/main.dart.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/workPress/flutter/flutter_floatwing/example/lib/views&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.example/lib/main.dart.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/workPress/flutter/flutter_floatwing/example/lib/views",
+    "project.structure.last.edited": "SDK Location",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "flutter.settings",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\workPress\flutter\flutter_floatwing\example\lib\views" />

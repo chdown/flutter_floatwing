@@ -261,7 +261,6 @@ class WindowConfig {
   double? marginVertical;
   double? offsetX;
 
-  // windows平台中使用
   double? widthPercent;
   double? heightPercent;
   double? offsetXPercent;
